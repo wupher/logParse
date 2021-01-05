@@ -31,7 +31,7 @@ func lineProcess(line string) {
 	//Update Global Data
 	gMutex.Lock()
 	if logData.CompanyCode == "" {
-		errMap[""] ++
+		errMap[""]++
 	}
 
 	if logData.Model == "ReportJob" {
@@ -47,11 +47,17 @@ func outPut() {
 	s, _ = json.Marshal(errMap)
 	fmt.Println(string(s))
 	fmt.Println("Logs ...")
+	size := reportJobs.Len()
+	dataSpace := make([][]string, size)
+
 	for e := reportJobs.Front(); e != nil; e = e.Next() {
 		itemLog := LogSt(e.Value.(LogSt))
-		if itemLog.Status == 0 {
-			fmt.Printf("%v 商家任务完成于 %v, 耗时 %f \n", itemLog.CompanyCode, itemLog.RequestTime, itemLog.TimeConsume)
-		}
+		dataSpace = append(dataSpace, itemLog.Convert())
+	}
+
+	err := ExportCsv(dataSpace, "output.csv")
+	if err != nil {
+		log.Fatalln("CSV convert error:", err)
 	}
 
 }
@@ -68,12 +74,19 @@ func UnmarshallLog(line string) (logData LogSt, err error) {
 }
 
 type LogSt struct {
-	CompanyCode string  `json:"companycode"`
-	Model       string  `json:"model"`
-	Level       string  `json:"level"`
-	RequestTime time.Time  `json:"request_time"`
-	Msg         string  `json:"msg"`
-	ReportDate  string  `json:"more_info"`
-	TimeConsume float64 `json:"response_time"`
-	Status      int8    `json:"status"`
+	CompanyCode string    `json:"companycode"`
+	Model       string    `json:"model"`
+	Level       string    `json:"level"`
+	RequestTime time.Time `json:"request_time"`
+	Msg         string    `json:"msg"`
+	ReportDate  string    `json:"more_info"`
+	TimeConsume float64   `json:"response_time"`
+	Status      int8      `json:"status"`
+}
+
+func (log LogSt) Convert() []string {
+	on := log.RequestTime.Format("2006-01-02 15:04:05")
+	timeCon := fmt.Sprintf("%.2f", log.TimeConsume)
+	status := fmt.Sprintf("%d", log.Status)
+	return []string{log.CompanyCode, log.Model, log.Level, on, log.Msg, log.ReportDate, timeCon, status}
 }
