@@ -10,7 +10,7 @@ import (
 
 func main() {
 	fileList := []string{
-		"/Users/fanwu/Desktop/logs/19.log",
+		"/Users/fanwu/Documents/网盘/Nutstore/Documents/K米/Workspace/logs/19.log",
 	}
 	initData()
 	t := time.Now()
