@@ -10,7 +10,12 @@ import (
 
 func main() {
 	fileList := []string{
-		"/Users/fanwu/Documents/网盘/Nutstore/Documents/K米/Workspace/logs/19.log",
+		"/Users/fanwu/Desktop/logs/mgr_upload.2021-01-05-1.log.gz",
+		"/Users/fanwu/Desktop/logs/mgr_upload.2021-01-05-2.log.gz",
+		"/Users/fanwu/Desktop/logs/mgr_upload.2021-01-05-3.log.gz",
+		"/Users/fanwu/Desktop/logs/mgr_upload.2021-01-05-4.log.gz",
+		"/Users/fanwu/Desktop/logs/mgr_upload.2021-01-05-5.log.gz",
+		"/Users/fanwu/Desktop/logs/mgr_upload.2021-01-05-6.log.gz",
 	}
 	initData()
 	t := time.Now()

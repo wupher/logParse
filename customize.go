@@ -2,9 +2,13 @@ package main
 
 import (
 	"container/list"
+	"encoding/csv"
 	"fmt"
 	jsoniter "github.com/json-iterator/go"
 	"log"
+	"os"
+	"regexp"
+	"strconv"
 	"sync"
 	"time"
 )
@@ -22,6 +26,11 @@ func initData() {
 
 func lineProcess(line string) {
 	//pre process
+	r, _ := regexp.Compile("ReportJob")
+	if !r.MatchString(line) {
+		return
+	}
+
 	logData, err := UnmarshallLog(line)
 	if err != nil {
 		return
@@ -42,22 +51,40 @@ func lineProcess(line string) {
 }
 
 func outPut() {
-	s, _ := json.Marshal(allMap)
-	fmt.Println(string(s))
-	s, _ = json.Marshal(errMap)
-	fmt.Println(string(s))
-	fmt.Println("Logs ...")
-	size := reportJobs.Len()
-	dataSpace := make([][]string, size)
+	//s, _ := json.Marshal(allMap)
+	//fmt.Println(string(s))
+	//s, _ = json.Marshal(errMap)
+	//fmt.Println(string(s))
+	fmt.Println("Start Export CSV ...")
+	//size := reportJobs.Len()
+	//dataSpace := make([][]string, size)
+	file, err := os.Create("output.csv")
+
+	if err != nil {
+		log.Fatalln("csv 文件创建", err)
+		os.Exit(-1)
+	}
+
+	writer := csv.NewWriter(file)
+	defer writer.Flush()
+
+	if reportJobs.Len() > 0 {
+		err = writer.Write([]string{"companyCode", "model", "level", "request_time", "msg", "report_date",
+			"response_time", "status"})
+		if err != nil {
+			log.Fatalln("CSV output error", err)
+			os.Exit(-4)
+		}
+	}
 
 	for e := reportJobs.Front(); e != nil; e = e.Next() {
 		itemLog := LogSt(e.Value.(LogSt))
-		dataSpace = append(dataSpace, itemLog.Convert())
-	}
-
-	err := ExportCsv(dataSpace, "output.csv")
-	if err != nil {
-		log.Fatalln("CSV convert error:", err)
+		data := itemLog.Convert()
+		err = writer.Write(data)
+		if err != nil {
+			log.Fatalln("CSV output error", err)
+			os.Exit(-3)
+		}
 	}
 
 }
@@ -80,13 +107,13 @@ type LogSt struct {
 	RequestTime time.Time `json:"request_time"`
 	Msg         string    `json:"msg"`
 	ReportDate  string    `json:"more_info"`
-	TimeConsume float64   `json:"response_time"`
-	Status      int8      `json:"status"`
+	TimeConsume int       `json:"response_time"`
+	Status      int       `json:"status"`
 }
 
 func (log LogSt) Convert() []string {
 	on := log.RequestTime.Format("2006-01-02 15:04:05")
-	timeCon := fmt.Sprintf("%.2f", log.TimeConsume)
-	status := fmt.Sprintf("%d", log.Status)
+	timeCon := strconv.Itoa(log.TimeConsume)
+	status := strconv.Itoa(log.Status)
 	return []string{log.CompanyCode, log.Model, log.Level, on, log.Msg, log.ReportDate, timeCon, status}
 }
