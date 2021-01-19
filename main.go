@@ -9,14 +9,16 @@ import (
 )
 
 func main() {
+
 	fileList := []string{
-		"/Users/fanwu/Desktop/logs/mgr_upload.2021-01-05-1.log.gz",
-		"/Users/fanwu/Desktop/logs/mgr_upload.2021-01-05-2.log.gz",
-		"/Users/fanwu/Desktop/logs/mgr_upload.2021-01-05-3.log.gz",
-		"/Users/fanwu/Desktop/logs/mgr_upload.2021-01-05-4.log.gz",
-		"/Users/fanwu/Desktop/logs/mgr_upload.2021-01-05-5.log.gz",
-		"/Users/fanwu/Desktop/logs/mgr_upload.2021-01-05-6.log.gz",
+		"/Users/fanwu/Documents/网盘/Nutstore/Documents/K米/Workspace/logs/mgr_upload_logs/mgr_upload.2021-01-10.191.log.gz",
+		"/Users/fanwu/Documents/网盘/Nutstore/Documents/K米/Workspace/logs/mgr_upload_logs/mgr_upload.2021-01-10.36.log.gz",
+		"/Users/fanwu/Documents/网盘/Nutstore/Documents/K米/Workspace/logs/mgr_upload_logs/mgr_upload.2021-01-10.56.log.gz",
+		"/Users/fanwu/Documents/网盘/Nutstore/Documents/K米/Workspace/logs/mgr_upload_logs/mgr_upload.2021-01-10.59.log.gz",
+		"/Users/fanwu/Documents/网盘/Nutstore/Documents/K米/Workspace/logs/mgr_upload_logs/mgr_upload.2021-01-10.77.log.gz",
+		"/Users/fanwu/Documents/网盘/Nutstore/Documents/K米/Workspace/logs/mgr_upload_logs/mgr_upload.2021-01-10.80.log.gz",
 	}
+
 	initData()
 	t := time.Now()
 
@@ -35,7 +37,7 @@ func main() {
 		fmt.Printf("File %v time take - %v \n", v, time.Since(s))
 	}
 	fmt.Printf("All Time taken - %v \n", time.Since(t))
-	outPut()
+	outPut("/Users/fanwu/Documents/网盘/Nutstore/Documents/K米/Workspace/logs/csv/2021-01-10.csv")
 }
 
 func parseArgs() []string {

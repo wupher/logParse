@@ -50,7 +50,7 @@ func lineProcess(line string) {
 	gMutex.Unlock()
 }
 
-func outPut() {
+func outPut(outputFileName string) {
 	//s, _ := json.Marshal(allMap)
 	//fmt.Println(string(s))
 	//s, _ = json.Marshal(errMap)
@@ -58,11 +58,10 @@ func outPut() {
 	fmt.Println("Start Export CSV ...")
 	//size := reportJobs.Len()
 	//dataSpace := make([][]string, size)
-	file, err := os.Create("output.csv")
+	file, err := os.Create(outputFileName)
 
 	if err != nil {
 		log.Fatalln("csv 文件创建", err)
-		os.Exit(-1)
 	}
 
 	writer := csv.NewWriter(file)
@@ -73,17 +72,15 @@ func outPut() {
 			"response_time", "status"})
 		if err != nil {
 			log.Fatalln("CSV output error", err)
-			os.Exit(-4)
 		}
 	}
 
 	for e := reportJobs.Front(); e != nil; e = e.Next() {
-		itemLog := LogSt(e.Value.(LogSt))
+		itemLog := e.Value.(LogSt)
 		data := itemLog.Convert()
 		err = writer.Write(data)
 		if err != nil {
 			log.Fatalln("CSV output error", err)
-			os.Exit(-3)
 		}
 	}
 
