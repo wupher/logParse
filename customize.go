@@ -3,8 +3,8 @@ package main
 import (
 	"container/list"
 	"encoding/csv"
+	"encoding/json"
 	"fmt"
-	jsoniter "github.com/json-iterator/go"
 	"log"
 	"os"
 	"regexp"
@@ -12,8 +12,6 @@ import (
 	"sync"
 	"time"
 )
-
-var json = jsoniter.ConfigCompatibleWithStandardLibrary
 
 var gMutex sync.Mutex
 var allMap, errMap map[string]int64
