@@ -48,7 +48,7 @@ func lineProcess(line string) {
 	gMutex.Unlock()
 }
 
-func outPut(outputFileName string) {
+func outPut(csvFileName string) {
 	//s, _ := json.Marshal(allMap)
 	//fmt.Println(string(s))
 	//s, _ = json.Marshal(errMap)
@@ -56,7 +56,7 @@ func outPut(outputFileName string) {
 	fmt.Println("Start Export CSV ...")
 	//size := reportJobs.Len()
 	//dataSpace := make([][]string, size)
-	file, err := os.Create(outputFileName)
+	file, err := os.Create(csvFileName)
 
 	if err != nil {
 		log.Fatalln("csv 文件创建", err)
