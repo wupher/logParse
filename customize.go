@@ -49,7 +49,6 @@ func lineProcess(line string) {
 }
 
 func outPut(csvFileName string) {
-	t := time.Now()
 	fmt.Println("开始转换 CSV ...")
 	file, err := os.Create(csvFileName)
 
@@ -76,7 +75,7 @@ func outPut(csvFileName string) {
 			log.Fatalln("CSV output error", err)
 		}
 	}
-	fmt.Printf("CSV 转换完成耗时 %v 秒 \n", time.Since(t))
+	fmt.Printf("CSV 转换完成 \n")
 }
 
 func UnmarshallLog(line string) (logData LogSt, err error) {
