@@ -76,7 +76,7 @@ func outPut(csvFileName string) {
 			log.Fatalln("CSV output error", err)
 		}
 	}
-	fmt.Printf("ALL DONE，共耗时 %v 秒 \n", time.Since(t))
+	fmt.Printf("CSV 转换完成耗时 %v 秒 \n", time.Since(t))
 }
 
 func UnmarshallLog(line string) (logData LogSt, err error) {
