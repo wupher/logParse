@@ -60,8 +60,8 @@ func convertLogs(logFiles []string, csv string) {
 			fmt.Printf("Handle file %v err %v \n", v, err)
 		}
 		_ = file.Close()
-		fmt.Printf("File %v time take - %v \n", v, time.Since(s))
+		fmt.Printf("文件 %v 花费时间 - %v 秒\n", v, time.Since(s))
 	}
-	fmt.Printf("All Time taken - %v \n", time.Since(t))
+	fmt.Printf("全部文件共花费 - %v 秒\n", time.Since(t))
 	outPut(csv)
 }

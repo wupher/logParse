@@ -49,17 +49,12 @@ func lineProcess(line string) {
 }
 
 func outPut(csvFileName string) {
-	//s, _ := json.Marshal(allMap)
-	//fmt.Println(string(s))
-	//s, _ = json.Marshal(errMap)
-	//fmt.Println(string(s))
-	fmt.Println("Start Export CSV ...")
-	//size := reportJobs.Len()
-	//dataSpace := make([][]string, size)
+	t := time.Now()
+	fmt.Println("开始转换 CSV ...")
 	file, err := os.Create(csvFileName)
 
 	if err != nil {
-		log.Fatalln("csv 文件创建", err)
+		log.Fatalln("csv 文件创建出错", err)
 	}
 
 	writer := csv.NewWriter(file)
@@ -81,7 +76,7 @@ func outPut(csvFileName string) {
 			log.Fatalln("CSV output error", err)
 		}
 	}
-
+	fmt.Printf("ALL DONE，共耗时 %v 秒 \n", time.Since(t))
 }
 
 func UnmarshallLog(line string) (logData LogSt, err error) {
